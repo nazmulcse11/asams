@@ -1,0 +1,60 @@
+@use "website/preloader";
+@use "website/style.scss";
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    body {
+        @apply bg-[#F8F9FB];
+    }
+    p, li {
+        @apply max-lg:text-sm max-lg:leading-[1.875];
+    }
+    input:not([type='checkbox']),
+    input:not([type='radio']),
+    input:not([type='file']),
+    textarea {
+        @apply text-sm font-light dark:text-white bg-transparent py-4 px-4 bg-[#F0F2F4] focus-visible:outline-gunmetal outline-1 rounded-md;
+    }
+    select {
+        @apply text-sm font-light dark:text-white bg-transparent py-4 px-4 bg-[#F0F2F4] rounded-md;
+    }
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    textarea:-webkit-autofill,
+    textarea:-webkit-autofill:hover,
+    textarea:-webkit-autofill:focus,
+    select:-webkit-autofill,
+    select:-webkit-autofill:hover,
+    select:-webkit-autofill:focus {
+        -webkit-text-fill-color: black;
+        -webkit-box-shadow: 0 0 0px 1000px transparent inset;
+        transition: background-color 5000s ease-in-out 0s;
+    }
+    html.dark input:-webkit-autofill,
+    html.dark input:-webkit-autofill:hover,
+    html.dark input:-webkit-autofill:focus,
+    html.dark textarea:-webkit-autofill,
+    html.dark textarea:-webkit-autofill:hover,
+    html.dark textarea:-webkit-autofill:focus,
+    html.dark select:-webkit-autofill,
+    html.dark select:-webkit-autofill:hover,
+    html.dark select:-webkit-autofill:focus {
+        -webkit-text-fill-color: white;
+        -webkit-box-shadow: 0 0 0px 1000px transparent inset;
+        transition: background-color 5000s ease-in-out 0s;
+    }
+}
+@layer utilities {
+    .whitestroke3 {
+        text-shadow: 1px 0 0 white, 0 1px 0 white, -1px 0 0 white, 0 -1px 0 white;
+    }
+    #registration-form fieldset:not(:first-of-type){
+        display: none;
+    }
+    
+}

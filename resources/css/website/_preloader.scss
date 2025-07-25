@@ -1,0 +1,144 @@
+@use "sass:math";
+.site__preloader {
+	--hue: 223;
+	--sat: 10%;
+	--gray100: hsl(var(--hue), var(--sat), 90%);
+	--gray900: hsl(var(--hue), var(--sat), 10%);
+	--primary500: hsl(var(--hue), 90%, 50%);
+	--trans-dur: 0.3s;
+	color-scheme: light dark;
+
+
+	position: fixed;
+	inset: 0;
+	z-index: 99999;
+	background-color: white;
+	transition: all .15s ease;
+	display: grid;
+	place-items: center;
+}
+
+.site__preloader .box {
+	display: flex;
+	width: 10em;
+
+	&,
+	&__sides {
+		aspect-ratio: 1;
+		position: relative;
+	}
+	&__sides {
+		margin: auto;
+		width: 70%;
+		transform: translateY(33%) rotateX(60deg) rotateZ(45deg) {
+			style: preserve-3d;
+		};
+	}
+	&__side {
+		$top: 50%;
+		$height: 75%;
+		// $transY: calc(#{$top} / #{$height} * 100%);
+		$transY: math.div($top, $height) * 100%;
+
+		opacity: 0.6;
+		overflow: hidden;
+		position: absolute;
+		top: $top;
+		left: 0;
+		height: $height;
+		width: 100%;
+		transform: translateY($transY) rotateX(90deg) {
+			origin: 50% 0;
+		};
+
+		&:before {
+			animation: {
+				name:
+					side-fade-1,
+					side-move-1;
+				duration: 1s;
+				timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+				iteration-count: infinite;
+			};
+			background-color: currentColor;
+			content: "";
+			display: block;
+			width: 200%;
+			height: 100%;
+		}
+		@for $s from 2 through 6 {
+			&:nth-child(#{$s}) {
+				transform: rotate(-90deg * ($s - 1)) translateY($transY) rotateX(90deg);
+
+				&:before {
+					@if $s <= 4 {
+						animation-name:
+							side-fade-#{$s},
+							side-move-#{$s};
+					} @else {
+						animation-name: side-move-#{$s};
+					}
+				}
+			}
+		}
+		&:nth-child(even) {
+			&:before {
+				background-color: var(--primary500);
+			}
+		}
+	}
+}
+
+/* Animations */
+@for $s from 1 through 6 {
+	// fading
+	@if $s <= 4 {
+		$ease-in: cubic-bezier(0.12, 0, 0.39, 0);
+		$ease-out: cubic-bezier(0.61, 1, 0.88, 1);
+		$fade-timing: $ease-in;
+
+		@if $s % 2 == 0 {
+			$fade-timing: $ease-out;
+		}
+		@keyframes side-fade-#{$s} {
+			$keyframe-start: 25% * ($s - 1);
+			$keyframe-end: 25% * $s;
+
+			@if $s == 1 {
+				0% {
+					animation-timing-function: $fade-timing;
+					opacity: 1;
+				}
+			} @else {
+				0%,
+				#{$keyframe-start} {
+					animation-timing-function: $fade-timing;
+					opacity: 1;
+				}
+			}
+			@if $s < 4 {
+				#{$keyframe-end},
+				100% {
+					opacity: 0;
+				}
+			} @else {
+				100% {
+					opacity: 0;
+				}
+			}
+		}
+	}
+	// sliding
+	$move-by: 50% * ($s - 1);
+
+	@keyframes side-move-#{$s} {
+		@for $k from 0 through 2 {
+			$keyframe: 50% * $k;
+			$move-start: 100% * $k;
+
+			#{$keyframe} {
+				transform: translateX($move-start - $move-by);
+			}
+		}
+	}
+}

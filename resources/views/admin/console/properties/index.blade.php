@@ -399,7 +399,6 @@
         </style>
         @vite(["resources/js/custom/chart-active.js"])
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
         <script>
             function deleteProperty() {
                 document.querySelectorAll(".delete-property-btn").forEach(button => {
@@ -419,13 +418,11 @@
                             },
                             showLoaderOnConfirm: true,
                             preConfirm: async (password) => {
-
                                 axios.delete('{{ route("admin.console.property.destroy", ":id") }}'.replace(":id", propertyId), {
                                     data: {
                                         password: password
                                     }
                                 }).then(response => {
-
                                     console.log(response.data);
                                     if(response.data.success) {
                                         document.getElementById("property-card-" + propertyId).remove();
@@ -446,7 +443,6 @@
                                         });
                                     }
                                 }).catch(error => { console.error(error); });
-
                             },
                             allowOutsideClick: () => !Swal.isLoading()
                         });
@@ -456,12 +452,11 @@
 
             $(document).ready(function () {
                 deleteProperty();
+
                 $('#enableBlock, #enableunit').on('change', function () {
                     if (this.checked) {
-                        // Uncheck the other one
                         $('#enableBlock, #enableunit').not(this).prop('checked', false);
                     } else {
-                        // Check the other one
                         $('#enableBlock, #enableunit').not(this).prop('checked', true);
                     }
                 });
@@ -473,7 +468,6 @@
 
                     axios.post('{{ route('admin.console.property.init') }}', form_data)
                         .then(function (response) {
-
                             console.log(response.data);
                             $("#add_new_property").html(response.data.html);
                             $('.asams-modal.show').addClass('hidden').removeClass('show');
@@ -485,136 +479,19 @@
                                 { parent: 'state_id', child: 'city_id', type: 'city', filterKey: 'state_id', placeholder: "Select City" },
                             ]);
 
-                            const $form = $('#multiStepForm');
-                            const $steps = $form.find('.step');
-                            const $nextButtons = $form.find('.next-step');
-                            const $prevButtons = $form.find('.prev-step');
-                            const $progressBar = $form.find('.progress-bar');
-                            const $progressText = $('text.step-count-placeholder');
-                            const totalSteps = $steps.length;
-                            let currentStep = 1;
-
-                            // SVG Progress Bar
-                            const radius = $progressBar[0].r.baseVal.value;
-                            const circumference = 2 * Math.PI * radius;
-                            $progressBar.css({
-                                strokeDasharray: circumference,
-                                strokeDashoffset: circumference
-                            });
-
-                            function setProgress(step) {
-                                const progressRatio = step / totalSteps;
-                                const offset = circumference * (1 - progressRatio);
-                                $progressBar.css('strokeDashoffset', offset);
-                            }
-
-                            function validateStep(step) {
-                                const $currentStep = $steps.eq(step - 1);
-                                const $requiredFields = $currentStep.find('input[required], select[required], textarea[required]');
-                                let isValid = true;
-
-                                $requiredFields.each(function () {
-                                    const $field = $(this);
-                                    const value = $field.val();
-
-                                    if (
-                                        !value ||
-                                        $.trim(value) === '' ||
-                                        ($field.is('select') && $field.prop('selectedIndex') === 0)
-                                    ) {
-                                        isValid = false;
-                                        return false; // break loop
-                                    }
-                                });
-
-                                return isValid;
-                            }
-
-                            function showValidationErrors(step) {
-                                const $currentStep = $steps.eq(step - 1);
-                                const $requiredFields = $currentStep.find('input[required], select[required], textarea[required]');
-                                let allValid = true;
-
-                                $requiredFields.each(function () {
-                                    const $field = $(this);
-                                    const value = $field.val();
-                                    const isInvalid =
-                                        !value ||
-                                        $.trim(value) === '' ||
-                                        ($field.is('select') && $field.prop('selectedIndex') === 0);
-
-                                    if (isInvalid || !$field[0].checkValidity()) {
-                                        $field.addClass('border-red-500');
-                                        $field[0].reportValidity?.();
-                                        allValid = false;
-                                    } else {
-                                        $field.removeClass('border-red-500');
-                                    }
-                                });
-
-                                return allValid;
-                            }
-
-                            function toggleNextButton() {
-                                const isValid = validateStep(currentStep);
-                                const $currentNextBtn = $steps.eq(currentStep - 1).find('.next-step');
-                                $currentNextBtn.prop('disabled', !isValid);
-                            }
-
-                            function showStep(step) {
-                                $steps.addClass('hidden').eq(step - 1).removeClass('hidden');
-                                $progressText.text(`${step}/${totalSteps}`);
-                                setProgress(step);
-                                toggleNextButton();
-                            }
-
-                            // Prev button
-                            $prevButtons.on('click', function () {
-                                if (currentStep > 1) {
-                                    currentStep--;
-                                    showStep(currentStep);
-                                }
-                            });
-
-                            // Next button
-                            $nextButtons.on('click', function () {
-                                if (currentStep < totalSteps) {
-                                    const isValid = showValidationErrors(currentStep);
-                                    if (isValid) {
-                                        currentStep++;
-                                        showStep(currentStep);
-                                    }
-                                }
-                            });
-
-                            // Realtime validation for all fields
-                            $steps.each(function () {
-                                const $step = $(this);
-                                const $requiredFields = $step.find('input[required], select[required], textarea[required]');
-
-                                $requiredFields.on('input change', function () {
-                                    toggleNextButton();
-                                });
-                            });
-
-                            showStep(currentStep);
+                            // Initialize Multi-Step Form
+                            initializeMultiStepForm();
                         })
                         .catch(function (error) {
                             alert(error.response.data.message);
                         });
-
-
                 });
 
                 // Open modal
                 $('[data-popup="modal"]').on('click', function (e) {
                     e.preventDefault();
                     const targetModal = $(this).attr('href');
-
-                    // Close any open modal before opening the new one
                     $('.asams-modal.show').addClass('hidden').removeClass('show');
-
-                    // Open the target modal
                     $(targetModal).removeClass('hidden').addClass('show');
                 });
 
@@ -635,13 +512,9 @@
                         $('.asams-modal.show').addClass('hidden').removeClass('show');
                     }
                 });
-
             });
 
-        </script>
-
-        <script>
-            $(document).ready(function () {
+            function initializeMultiStepForm() {
                 const $form = $('#multiStepForm');
                 const $steps = $form.find('.step');
                 const $nextButtons = $form.find('.next-step');
@@ -680,9 +553,29 @@
                             ($field.is('select') && $field.prop('selectedIndex') === 0)
                         ) {
                             isValid = false;
-                            return false; // break loop
+                            return false;
                         }
                     });
+
+                    // Additional lat/lng validation for step 2
+                    if (step === 2) {
+                        const $lat = $currentStep.find('#latitude');
+                        const $lng = $currentStep.find('#longitude');
+
+                        if ($lat.length && $lat.prop('required')) {
+                            const latVal = parseFloat($lat.val());
+                            if (!$lat.val() || $.trim($lat.val()) === '' || isNaN(latVal) || latVal < -90 || latVal > 90) {
+                                isValid = false;
+                            }
+                        }
+
+                        if ($lng.length && $lng.prop('required')) {
+                            const lngVal = parseFloat($lng.val());
+                            if (!$lng.val() || $.trim($lng.val()) === '' || isNaN(lngVal) || lngVal < -180 || lngVal > 180) {
+                                isValid = false;
+                            }
+                        }
+                    }
 
                     return isValid;
                 }
@@ -709,6 +602,50 @@
                         }
                     });
 
+                    // Specific lat/lng validation for step 2
+                    if (step === 2) {
+                        const $lat = $currentStep.find('#latitude');
+                        const $lng = $currentStep.find('#longitude');
+
+                        if ($lat.length && $lat.prop('required')) {
+                            const latVal = parseFloat($lat.val());
+                            const latValue = $lat.val();
+
+                            if (!latValue || $.trim(latValue) === '') {
+                                $lat.addClass('border-red-500');
+                                alert('Latitude is required.');
+                                $lat.focus();
+                                allValid = false;
+                            } else if (isNaN(latVal) || latVal < -90 || latVal > 90) {
+                                alert('Latitude must be between -90 and 90.');
+                                $lat.addClass('border-red-500');
+                                $lat.focus();
+                                allValid = false;
+                            } else {
+                                $lat.removeClass('border-red-500');
+                            }
+                        }
+
+                        if ($lng.length && $lng.prop('required')) {
+                            const lngVal = parseFloat($lng.val());
+                            const lngValue = $lng.val();
+
+                            if (!lngValue || $.trim(lngValue) === '') {
+                                $lng.addClass('border-red-500');
+                                alert('Longitude is required.');
+                                $lng.focus();
+                                allValid = false;
+                            } else if (isNaN(lngVal) || lngVal < -180 || lngVal > 180) {
+                                alert('Longitude must be between -180 and 180.');
+                                $lng.addClass('border-red-500');
+                                $lng.focus();
+                                allValid = false;
+                            } else {
+                                $lng.removeClass('border-red-500');
+                            }
+                        }
+                    }
+
                     return allValid;
                 }
 
@@ -734,12 +671,19 @@
                 });
 
                 // Next button
-                $nextButtons.on('click', function () {
+                $nextButtons.on('click', function (e) {
+                    e.preventDefault();
+                    console.log('Next button clicked, current step:', currentStep);
+
                     if (currentStep < totalSteps) {
                         const isValid = showValidationErrors(currentStep);
+                        console.log('Validation result:', isValid);
+
                         if (isValid) {
                             currentStep++;
                             showStep(currentStep);
+                        } else {
+                            console.log('Validation failed, staying on current step');
                         }
                     }
                 });
@@ -754,9 +698,30 @@
                     });
                 });
 
-                showStep(currentStep);
-            });
-        </script>
+                // Real-time validation for lat/lng fields
+                $(document).on('input change', '#latitude, #longitude', function () {
+                    const $field = $(this);
+                    const value = parseFloat($field.val());
 
+                    if ($field.attr('id') === 'latitude') {
+                        if (!isNaN(value) && (value < -90 || value > 90)) {
+                            $field.addClass('border-red-500');
+                        } else {
+                            $field.removeClass('border-red-500');
+                        }
+                    } else if ($field.attr('id') === 'longitude') {
+                        if (!isNaN(value) && (value < -180 || value > 180)) {
+                            $field.addClass('border-red-500');
+                        } else {
+                            $field.removeClass('border-red-500');
+                        }
+                    }
+
+                    toggleNextButton();
+                });
+
+                showStep(currentStep);
+            }
+        </script>
     @endpush
 </x-app-layout>

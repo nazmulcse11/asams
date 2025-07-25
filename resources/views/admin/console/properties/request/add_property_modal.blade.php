@@ -167,7 +167,7 @@
                     @if($init->enable_gmaps)
                         <div class="field-item space-y-2 sm:col-span-2">
                             <label class="text-gunmetal font-medium block">
-                                Google Latitude <span class="text-red-600">*</span>
+                                {{ __('Google Latitude (-90 to 90)') }} <span class="text-red-600">*</span>
                             </label>
                             <div class="relative">
                                 <span class="absolute left-4 top-1/2 -translate-y-1/2">
@@ -176,13 +176,13 @@
                                         <path d="M8 13.25C11.4518 13.25 14.25 10.4518 14.25 7C14.25 3.54822 11.4518 0.75 8 0.75C4.54822 0.75 1.75 3.54822 1.75 7C1.75 10.4518 4.54822 13.25 8 13.25ZM8 13.25V16.25" stroke="#8997A9" stroke-width="1.5" stroke-linecap="round"/>
                                     </svg>
                                 </span>
-                                <input type="number" inputmode="numeric" name="latitude" value="{{ old('latitude') }}" placeholder="Map Latitude" min="0" step=".01" class="w-full text-sm font-light py-4 px-4 pl-12 bg-white border rounded-lg"" />
+                                <input type="number" inputmode="numeric" name="latitude" id="latitude" value="{{ old('latitude') }}" placeholder="Map Latitude" min="0" step=".01" class="w-full text-sm font-light py-4 px-4 pl-12 bg-white border rounded-lg" required />
                             </div>
                             <x-input-error :messages="$errors->get('latitude')" class="mt-1"/>
                         </div>
                         <div class="field-item space-y-2 sm:col-span-2">
                         <label class="text-gunmetal font-medium block">
-                            Google Longitude <span class="text-red-600">*</span>
+                            {{ __('Google Longi (-180 to 180)') }} <span class="text-red-600">*</span>
                         </label>
                         <div class="relative">
                             <span class="absolute left-4 top-1/2 -translate-y-1/2">
@@ -191,7 +191,7 @@
                                     <path d="M8 13.25C11.4518 13.25 14.25 10.4518 14.25 7C14.25 3.54822 11.4518 0.75 8 0.75C4.54822 0.75 1.75 3.54822 1.75 7C1.75 10.4518 4.54822 13.25 8 13.25ZM8 13.25V16.25" stroke="#8997A9" stroke-width="1.5" stroke-linecap="round"/>
                                 </svg>
                             </span>
-                            <input type="number" inputmode="numeric" name="longitude" value="{{ old('longitude') }}" placeholder="Map Longitude" min="0" step=".01" class="w-full text-sm font-light py-4 px-4 pl-12 bg-white border rounded-lg"/>
+                            <input type="number" inputmode="numeric" name="longitude" id="longitude" value="{{ old('longitude') }}" placeholder="Map Longitude" min="0" step=".01" class="w-full text-sm font-light py-4 px-4 pl-12 bg-white border rounded-lg" required/>
                         </div>
                         <x-input-error :messages="$errors->get('longitude')" class="mt-1"/>
                     </div>
@@ -206,7 +206,7 @@
                         </svg>
                         Previous
                     </button>
-                    <button type="button" class="next-step bg-red-600 text-white">
+                    <button type="button" class="lat-lang next-step bg-red-600 text-white">
                         Continue
                         <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M2 6.07807C3.53168 3.07158 6.66036 1 10.2494 1C15.3369 1 19.4994 5.1625 19.4994 10.25C19.4994 15.3375 15.3369 19.5 10.2494 19.5C6.66036 19.5 3.53168 17.4284 2 14.4219" stroke="currentcolor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>

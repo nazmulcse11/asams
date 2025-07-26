@@ -9,7 +9,7 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^8.3",
+        "php": "^8.2",
         "chillerlan/php-qrcode": "^5.0",
         "jackiedo/dotenv-editor": "^1.1",
         "jenssegers/agent": "^2.6",

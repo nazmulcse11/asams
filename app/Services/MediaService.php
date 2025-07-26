@@ -16,9 +16,15 @@ class MediaService
      * @param string $collection
      * @return void
      */
-    public function uploadMedia(Model $model, $media, string $collection = "default"): void
+
+    public function uploadMedia(Model $model, UploadedFile|array $media, string $collection = 'default'): void
     {
-        $model->addMedia($media)->toMediaCollection($collection);
+        // Normalize to array if it's a single file
+        $mediaFiles = is_array($media) ? $media : [$media];
+
+        foreach ($mediaFiles as $file) {
+            $model->addMedia($file)->toMediaCollection($collection);
+        }
     }
 
     /**

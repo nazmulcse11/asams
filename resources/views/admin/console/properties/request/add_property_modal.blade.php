@@ -278,7 +278,7 @@
                             <label for="images" class="text-gunmetal font-medium block ">
                                 Upload Images<span class="text-slate-500 text-xs font-light">(multiple upload)</span> <span class="text-red-600">*</span>
                             </label>
-                            <input type="file" inputmode="numeric" name="images" id="images" class="w-full border border-gray-300 rounded-lg p-2 bg-white file:mr-4 file:p-2 file:rounded-lg file:border-0 file:bg-red-600 file:text-white" required />
+                            <input type="file" inputmode="numeric" name="images[]" id="images" multiple  class="w-full border border-gray-300 rounded-lg p-2 bg-white file:mr-4 file:p-2 file:rounded-lg file:border-0 file:bg-red-600 file:text-white" required />
                             <x-input-error :messages="$errors->get('property_images')" class="mt-1"/>
                         </div>
                         <div class="field-item space-y-2">

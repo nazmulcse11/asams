@@ -74,11 +74,16 @@ class MediaService
      * @param string $collection
      * @return void
      */
-    public function updateMedia(Model $model, $media, string $collection = "default"): void
+    public function updateMedia(Model $model, UploadedFile|array $media, string $collection = "default"): void
     {
         $model->clearMediaCollection($collection);
-        $model->addMedia($media)->toMediaCollection($collection);
+        $mediaFiles = is_array($media) ? $media : [$media];
+
+        foreach ($mediaFiles as $file) {
+            $model->addMedia($file)->toMediaCollection($collection);
+        }
     }
+
 
     /**
      * Update multiple media files in a model's media collection.

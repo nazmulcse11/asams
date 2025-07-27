@@ -36,7 +36,7 @@
                             <input type="text" name="name" id="name" value="{{ old("name", $item->name) }}" placeholder="Nur Super Market" class="w-full text-sm font-light py-4 px-4 bg-white border rounded-lg" required>
                             <x-input-error :messages="$errors->get('name')" class="mt-1"/>
                         </div>
-                        @if($init->property_type)
+                        @if($init?->property_type)
                             <div class="field-item space-y-2">
                                 <label for="property_type_id" class="text-gunmetal font-medium block">
                                     Property Type <span class="text-red-600">*</span>
@@ -50,7 +50,7 @@
                             </div>
                         @endif
 
-                        @if($init->enable_contact_info)
+                        @if($init?->enable_contact_info)
                             <div class="field-item space-y-2">
                                 <label for="contact_person" class="text-gunmetal font-medium block">
                                     Contact Person <span class="text-red-600">*</span>
@@ -83,7 +83,7 @@
                     </div>
 
                 <!-- Step 2 -->
-                @if($init->enable_address_info || $init->enable_gmaps)
+                @if($init?->enable_address_info || $init?->enable_gmaps)
                     <div class="bg-[#F8F9FB] border border-[#F0F2F4] py-2 px-2 rounded-full flex items-center gap-4">
                         <div class="icon w-12 h-12 rounded-full bg-[#F0F2F4] inline-flex items-center justify-center">
                             <svg width="16" height="20" viewBox="0 0 16 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -124,18 +124,18 @@
                                 <x-input-error :messages="$errors->get('country_id')" class="mt-1"/>
                             </div>
                             <div class="field-item space-y-2">
-                                <label for="city_id" class="text-gunmetal font-medium block">
-                                    City <span class="text-red-600">*</span>
-                                </label>
-                                <select name="city_id" id="city_id" data-old="{{ old('city_id', $item->addresses?->first()?->city_id) }}" class="w-full text-sm font-light py-4 px-4 bg-white border rounded-lg"></select>
-                                <x-input-error :messages="$errors->get('city_id')" class="mt-1"/>
-                            </div>
-                            <div class="field-item space-y-2">
                                 <label for="state_id" class="text-gunmetal font-medium block">
                                     State <span class="text-red-600">*</span>
                                 </label>
                                 <select name="state_id" id="state_id" data-old="{{ old('state_id', $item->addresses?->first()?->state_id) }}" class="w-full text-sm font-light py-4 px-4 bg-white border rounded-lg"></select>
                                 <x-input-error :messages="$errors->get('state_id')" class="mt-1"/>
+                            </div>
+                            <div class="field-item space-y-2">
+                                <label for="city_id" class="text-gunmetal font-medium block">
+                                    City <span class="text-red-600">*</span>
+                                </label>
+                                <select name="city_id" id="city_id" data-old="{{ old('city_id', $item->addresses?->first()?->city_id) }}" class="w-full text-sm font-light py-4 px-4 bg-white border rounded-lg"></select>
+                                <x-input-error :messages="$errors->get('city_id')" class="mt-1"/>
                             </div>
                             <div class="field-item space-y-2">
                                 <label for="zip_code" class="text-gunmetal font-medium block">
@@ -205,7 +205,7 @@
 
 
                     <div class="form-body grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 my-10">
-                        @if($init->enable_area)
+                        @if($init?->enable_area)
                             <div class="field-item space-y-2">
                                 <label for="length" class="text-gunmetal font-medium block ">
                                     Length<span class="text-slate-500">(feet)</span> <span class="text-red-600">*</span>
@@ -236,7 +236,7 @@
                             <input type="number" inputmode="numeric" name="floor_size" id="floor_size" value="{{ old('floor_size', $item->floor_size)}}" placeholder="35,570" class="w-full text-sm font-light py-4 px-4 bg-white border rounded-lg" required />
                             <x-input-error :messages="$errors->get('property_floor_size')" class="mt-1"/>
                         </div>
-                        @if($init->img_video)
+                        @if($init?->img_video)
                             <div class="field-item space-y-2">
                                 <label for="images" class="text-gunmetal font-medium block ">
                                     Upload Images<span class="text-slate-500 text-xs font-light">(multiple upload)</span>
